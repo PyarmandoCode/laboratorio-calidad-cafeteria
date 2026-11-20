@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio de Calidad - Cafetería</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <main class="contenedor">
+        <header>
+            <p class="etiqueta">LABORATORIO PRÁCTICO</p>
+            <h1>Sistema de pedidos - Cafetería</h1>
+            <p>Registra un pedido y verifica si funciona correctamente.</p>
+        </header>
+
+        <section class="panel">
+            <h2>Registrar pedido</h2>
+
+            <form method="POST">
+                <label for="producto">Producto</label>
+
+                <select name="producto" id="producto">
+                    <option value="">-- Selecciona un producto --</option>
+
+                    {% for codigo, producto in productos.items() %}
+                    <option value="{{ codigo }}">
+                        {{ producto.nombre }} - S/ {{ "%.2f"|format(producto.precio) }}
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <label for="cantidad">Cantidad</label>
+                <input type="number" id="cantidad" name="cantidad" value="1">
+
+                <button type="submit">Registrar pedido</button>
+            </form>
+        </section>
+
+        {% if mensaje %}
+        <section class="resultado">
+            <h2>Resultado del sistema</h2>
+            <p>{{ mensaje }}</p>
+
+            {% if detalle %}
+            <ul>
+                {% for item in detalle %}
+                <li>
+                    {{ item.nombre }} x {{ item.cantidad }}
+                    = S/ {{ "%.2f"|format(item.subtotal) }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <strong>Total: S/ {{ "%.2f"|format(total) }}</strong>
+        </section>
+        {% endif %}
+
+        <footer>
+            <p>Actividad académica: ejecutar los casos de prueba y registrar evidencias.</p>
+        </footer>
+    </main>
+</body>
+</html>
